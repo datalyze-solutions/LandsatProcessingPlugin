@@ -81,3 +81,24 @@ class landsatProcessingPlugin:
             # do something useful (delete the line containing pass and
             # substitute with your code)
             pass
+	  
+	 
+     
+class landsatMetadat():
+    def __init__(self, filepath, viewWidget):
+	self.filepath = filepath
+	self.viewWidget = viewWidget
+	self.metadata = None
+	self.lastChangedDate = os.filepathDate
+	
+    def isUpToDate(self):
+      if self.lastChangedDate != os.filepathDate:
+	self.parseMetadata()
+	self.lastChangedDate
+	self.lastChangedDate = os.filepathDate
+    	
+    def parseMetadata(self):
+      self.metadata = parserErgebnis
+      
+    def updateView(self):
+      self.viewWidget.update(self.metadata)

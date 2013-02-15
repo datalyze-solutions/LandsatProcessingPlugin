@@ -22,12 +22,21 @@
 
 from PyQt4 import QtCore, QtGui
 from ui_landsatprocessingplugin import Ui_landsatProcessingPlugin
-# create the dialog for zoom to point
-
 
 class landsatProcessingPluginDialog(QtGui.QDialog):
-    def __init__(self):
-        QtGui.QDialog.__init__(self)
-        # Set up the user interface from Designer.
-        self.ui = Ui_landsatProcessingPlugin()
-        self.ui.setupUi(self)
+  def __init__(self):
+    QtGui.QDialog.__init__(self)
+    # Set up the user interface from Designer.
+    self.ui = Ui_landsatProcessingPlugin()
+    self.ui.setupUi(self)
+
+    item = QtGui.QTreeWidgetItem(['name', 'tags'])
+    item2 = QtGui.QTreeWidgetItem(['name2', 'tags2'])
+    item.setCheckState(0,QtCore.Qt.Checked)
+    #self.ui.treeWidgetMetadata.addTopLevelItem(item)
+    self.ui.treeWidgetMetadata.insertTopLevelItem(0, item)
+    self.ui.treeWidgetMetadata.insertTopLevelItem(0, item2)
+    
+    
+  def updateTreeWidget():
+    update(metadata)
