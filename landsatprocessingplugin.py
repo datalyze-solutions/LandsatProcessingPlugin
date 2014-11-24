@@ -28,7 +28,6 @@ import resources_rc
 # Import the code for the dialog
 from landsatprocessingplugindialog import landsatProcessingPluginDialog
 
-
 class landsatProcessingPlugin:
 
     def __init__(self, iface):
@@ -51,40 +50,45 @@ class landsatProcessingPlugin:
                 QCoreApplication.installTranslator(self.translator)
 
         # Create the dialog (after translation) and keep reference
-        self.dlg = landsatProcessingPluginDialog()
+        self.dlg = landsatProcessingPluginDialog()               
 
     def initGui(self):
         # Create action that will start plugin configuration
         self.action = QAction(
             QIcon(":/plugins/landsatprocessingplugin/icon.png"),
             u"Landsat Processing Plugin", self.iface.mainWindow())
-        # connect the action to the run method
-        QObject.connect(self.action, SIGNAL("triggered()"), self.run)
 
         # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu(u"&Landsat Processing Plugin", self.action)
+        
+        self.action.triggered.connect(self.run)
+        self.dlg.filestuff.sendFilename.connect(self.test)
+        self.dlg.filestuff.doNothingSignal.connect(self.test2)
+        
+        #print self.dlg.filestuff
+        
+        #QObject.connect(self.dlg, SIGNAL("xyCoordinates(const QString &)"), self.test)
+        
+        # start real work
+        #self.getFile()
 
+    def test(self, text):
+	print text
+	
+    def test2(self):
+	print "eigenes signal emitiert"
+	
     def unload(self):
         # Remove the plugin menu item and icon
         self.iface.removePluginMenu(u"&Landsat Processing Plugin", self.action)
         self.iface.removeToolBarIcon(self.action)
-
-    # run method that performs all the real work
+        
     def run(self):
-        # show the dialog
-        self.dlg.show()
-        # Run the dialog event loop
-        result = self.dlg.exec_()
-        # See if OK was pressed
-        if result == 1:
-            # do something useful (delete the line containing pass and
-            # substitute with your code)
-            pass
-	  
-	 
-     
-class landsatMetadat():
+	self.dlg.show()
+	#self.dlg.test()
+
+class landsatMetadata():
     def __init__(self, filepath, viewWidget):
 	self.filepath = filepath
 	self.viewWidget = viewWidget

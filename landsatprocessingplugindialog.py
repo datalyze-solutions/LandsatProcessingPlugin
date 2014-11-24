@@ -20,23 +20,49 @@
  ***************************************************************************/
 """
 
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 from ui_landsatprocessingplugin import Ui_landsatProcessingPlugin
 
-class landsatProcessingPluginDialog(QtGui.QDialog):
-  def __init__(self):
-    QtGui.QDialog.__init__(self)
-    # Set up the user interface from Designer.
-    self.ui = Ui_landsatProcessingPlugin()
-    self.ui.setupUi(self)
+class Communicate(QObject):    
+    sendFilename = pyqtSignal(QString)
+    doNothingSignal = pyqtSignal()
+    
+class landsatProcessingPluginDialog(QDialog):
+    def __init__(self):
+	QDialog.__init__(self)
 
-    item = QtGui.QTreeWidgetItem(['name', 'tags'])
-    item2 = QtGui.QTreeWidgetItem(['name2', 'tags2'])
-    item.setCheckState(0,QtCore.Qt.Checked)
-    #self.ui.treeWidgetMetadata.addTopLevelItem(item)
-    self.ui.treeWidgetMetadata.insertTopLevelItem(0, item)
-    self.ui.treeWidgetMetadata.insertTopLevelItem(0, item2)
-    
-    
-  def updateTreeWidget():
-    update(metadata)
+	# Set up the user interface from Designer.
+	self.ui = Ui_landsatProcessingPlugin()
+	self.ui.setupUi(self)
+	self.ui.buttonChooseMetadata.clicked.connect(self.test)
+	
+	self.filestuff = Communicate()
+
+    def test(self):
+	print "hallo welt"
+	filename = self.getFile()
+
+	self.filestuff.sendFilename.emit(filename)
+	self.filestuff.doNothingSignal.emit()
+	    
+	#self.emit(SIGNAL("xyCoordinates(const QString &)"), QString(filename))
+	
+    def getFile(self, filterList = 'Alle Dateien(*.*)'):
+	return QFileDialog.getOpenFileName(self, 'Datei wählen', '.', filterList)
+	#try:
+	    #return QFileDialog.getOpenFileName(self.iface.mainWindow(), 'Datei wählen', '.', filterList)
+	#except:
+	    #pass
+	  
+	  
+	  
+    #item = QtGui.QTreeWidgetItem(['name', 'tags'])
+    #item2 = QtGui.QTreeWidgetItem(['name2', 'tags2'])
+    #item.setCheckState(0,QtCore.Qt.Checked)
+    ##self.ui.treeWidgetMetadata.addTopLevelItem(item)
+    #self.ui.treeWidgetMetadata.insertTopLevelItem(0, item)
+    #self.ui.treeWidgetMetadata.insertTopLevelItem(0, item2)
+       
+  #def updateTreeWidget():
+    #update(metadata)
